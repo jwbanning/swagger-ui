@@ -1,7 +1,7 @@
 @import 'src/main/less/highlight_default.less';
 @import 'src/main/less/specs.less';
 @import 'src/main/less/auth.less';
-
+@import 'src/main/less/bv.less';
 .swagger-section {
 
 .access {
@@ -72,15 +72,39 @@
 }
 
 #header {
-    background-color: #89bf04;
-    padding: 14px;
+    // background-color: #89bf04;
+        padding: 14px;
+        border-top-left-radius: 0.5em;
+        border-top-right-radius: 0.5em;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        -moz-border-radius: 0.5em 0.5em 0 0;
+        background: #003d4c;
+        height: 30px;
+        overflow: hidden;
+        position: relative;
+
     a#logo {
         font-size: 1.5em;
         font-weight: bold;
         text-decoration: none;
-        background: transparent url(../images/logo_small.png) no-repeat left center;
-        padding: 20px 0 20px 40px;
+        //background: transparent url(../images/bv_logo.png) no-repeat left center;
+        // padding: 20px 0 20px 40px;
         color: white;
+        .bv-logo{
+            background: white url(../images/bv_logo.png) no-repeat left center;
+            border-radius: 20px;
+            float:left;
+            background-size: contain;
+            height: 30px;
+            width: 30px;
+        }
+        .conv{
+
+        }
+        // &:before{
+        //     background: transparent url(../images/bv_logo.png) no-repeat left center;    
+        // }
     }
     form#api_selector {
         display: block;
@@ -101,10 +125,10 @@
                 display: block;
                 text-decoration: none;
                 font-weight: bold;
-                padding: 6px 8px;
+                padding: 0px 8px;
                 font-size: 0.9em;
                 color: white;
-                background-color: #547f00;
+                background-color: #00ab8e;
                 -moz-border-radius: 4px;
                 -webkit-border-radius: 4px;
                 -o-border-radius: 4px;
@@ -113,7 +137,7 @@
                 border-radius: 4px;
             }
             a#explore:hover {
-                background-color: #547f00;
+                background-color: #00ab8e;
             }
             input {
                 font-size: 0.9em;

@@ -121,7 +121,7 @@
   opacity: 0.5;
 }
 .swagger-section .swagger-ui-wrap {
-  line-height: 1;
+  line-height: 30px;
   font-family: "Droid Sans", sans-serif;
   max-width: 960px;
   margin-left: auto;
