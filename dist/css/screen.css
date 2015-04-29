@@ -1231,6 +1231,9 @@
   height: 30px;
   width: 30px;
 }
+.swagger-section #header a#logo .conv {
+  padding-left: 10px;
+}
 .swagger-section #header form#api_selector {
   display: block;
   clear: none;
