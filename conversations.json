@@ -1,5 +1,24 @@
-{
+{ 
+    "swagger": "2.0",
+     "info": {
+        "contact": {
+            "email": "DeveloperAdvocate@bazaarvoice.com"
+        },
+        "description": "This is the BazaarVoice Conversations API.  You can find out more about it at <a href=\"https://developer.bazaarvoice.com/apis/conversations/\">http://swagger.io</a>.  For this sample, you can use the api key \"special-key\" to test the authorization filters",
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "termsOfService": "https://developer.bazaarvoice.com/terms",
+        "title": "BazaarVoice Conversations API ",
+        "version": "5.4"
+    },
+    "host": "stg.api.bazaarvoice.com",
     "basePath": "/data",
+    "externalDocs": {
+        "description": "Find out more about the BazaarVoice Conversations API",
+        "url": "https://developer.bazaarvoice.com/apis/conversations/"
+    },
     "definitions": {
         "ApiResponse": {
             "properties": {
@@ -167,22 +186,6 @@
             }
         }
     },
-    "externalDocs": {
-    },
-    "host": "stg.api.bazaarvoice.com",
-    "info": {
-        "contact": {
-            "email": "DeveloperAdvocate@bazaarvoice.com"
-        },
-        "description": "This is the BazaarVoice Conversations API.  You can find out more about it at <a href=\"https://developer.bazaarvoice.com/apis/conversations/\">https://developer.bazaarvoice.com/apis/conversations/</a>.",
-        "license": {
-            "name": "BazaarVoice Terms of Service",
-            "url": "https://developer.bazaarvoice.com/terms"
-        },
-        "termsOfService": "https://developer.bazaarvoice.com/terms",
-        "title": "BazaarVoice Conversations API ",
-        "version": "5.4"
-    },
     "paths": {
         "/reviews.json": {
             "get": {
@@ -237,11 +240,971 @@
                     "Reviews"
                 ]
             }
+        },
+        "/submitreview.json": {
+            "post": {
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "description": "",
+                "operationId": "submitReview",
+                "parameters": [
+                    {
+                        "description": "ID of pet that needs to be updated",
+                        "in": "path",
+                        "name": "petId",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Updated name of the pet",
+                        "in": "formData",
+                        "name": "name",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Updated status of the pet",
+                        "in": "formData",
+                        "name": "status",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "responses": {
+                    "405": {
+                        "description": "Invalid input"
+                    }
+                },
+                "security": [
+                    {
+                        "petstore_auth": [
+                            "write:pets",
+                            "read:pets"
+                        ]
+                    }
+                ],
+                "summary": "Submit Review for a given Product",
+                "tags": [
+                    "Reviews"
+                ]
+            }
+        },
+        "/stories.json": {
+            "get": {
+                "description": "Returns stories. Note that stories can be posted on either a Product or a Category.",
+                "operationId": "requestStories",
+                "parameters": [
+                    {
+                        "collectionFormat": "multi",
+                        "description": "Value of API Key",
+                        "in": "query",
+                        "name": "passkey",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "collectionFormat": "multi",
+                        "description": "Version of API",
+                        "in": "query",
+                        "name": "apiVersion",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "items": {
+                                "$ref": "#/definitions/Pet"
+                            },
+                            "type": "array"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid tag value"
+                    }
+                },
+                "security": [
+                    {
+                        "petstore_auth": [
+                            "write:pets",
+                            "read:pets"
+                        ]
+                    }
+                ],
+                "summary": "Finds Reviews by PassKey",
+                "tags": [
+                    "Stories"
+                ]
+            }
+        },
+        "/submitstory.json": {
+            "post": {
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "description": "",
+                "operationId": "submitStory",
+                "parameters": [
+                    {
+                        "description": "ID of pet that needs to be updated",
+                        "in": "path",
+                        "name": "petId",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Updated name of the pet",
+                        "in": "formData",
+                        "name": "name",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Updated status of the pet",
+                        "in": "formData",
+                        "name": "status",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "responses": {
+                    "405": {
+                        "description": "Invalid input"
+                    }
+                },
+                "security": [
+                    {
+                        "petstore_auth": [
+                            "write:pets",
+                            "read:pets"
+                        ]
+                    }
+                ],
+                "summary": "Submit stories on a product or a category.",
+                "tags": [
+                    "Stories"
+                ]
+            }
+        },
+        "/questions.json": {
+            "get": {
+                "description": "Returns Questions along with nested content like Answers and related subjects like Product/Category.",
+                "operationId": "displayQuestions",
+                "parameters": [
+                    {
+                        "collectionFormat": "multi",
+                        "description": "Value of API Key",
+                        "in": "query",
+                        "name": "passkey",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "collectionFormat": "multi",
+                        "description": "Version of API",
+                        "in": "query",
+                        "name": "apiVersion",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "items": {
+                                "$ref": "#/definitions/Pet"
+                            },
+                            "type": "array"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid tag value"
+                    }
+                },
+                "security": [
+                    {
+                        "petstore_auth": [
+                            "write:pets",
+                            "read:pets"
+                        ]
+                    }
+                ],
+                "summary": "Finds Questions by PassKey",
+                "tags": [
+                    "Questions"
+                ]
+            }
+        },
+        "/submitquestion.json": {
+            "post": {
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "description": "Submit questions on a product or category.",
+                "operationId": "submitStory",
+                "parameters": [
+                    {
+                        "description": "ID of pet that needs to be updated",
+                        "in": "path",
+                        "name": "petId",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Updated name of the pet",
+                        "in": "formData",
+                        "name": "name",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Updated status of the pet",
+                        "in": "formData",
+                        "name": "status",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "responses": {
+                    "405": {
+                        "description": "Invalid input"
+                    }
+                },
+                "security": [
+                    {
+                        "petstore_auth": [
+                            "write:pets",
+                            "read:pets"
+                        ]
+                    }
+                ],
+                "summary": "Submit questions on a product or category.",
+                "tags": [
+                    "Questions"
+                ]
+            }
+        },
+        "/comments.json": {
+            "get": {
+                "description": "Returns comments posted on reviews or stories.",
+                "operationId": "displayComments",
+                "parameters": [
+                    {
+                        "collectionFormat": "multi",
+                        "description": "Value of API Key",
+                        "in": "query",
+                        "name": "passkey",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "collectionFormat": "multi",
+                        "description": "Version of API",
+                        "in": "query",
+                        "name": "apiVersion",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "items": {
+                                "$ref": "#/definitions/Pet"
+                            },
+                            "type": "array"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid tag value"
+                    }
+                },
+                "security": [
+                    {
+                        "petstore_auth": [
+                            "write:pets",
+                            "read:pets"
+                        ]
+                    }
+                ],
+                "summary": "Returns comments posted on reviews or stories.",
+                "tags": [
+                    "Comments"
+                ]
+            }
+        },
+        "/submitreviewcomment.json": {
+            "post": {
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "description": "Submit a comment on a review or a story..",
+                "operationId": "submitReviewComment",
+                "parameters": [
+                    {
+                        "description": "ID of pet that needs to be updated",
+                        "in": "path",
+                        "name": "petId",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Updated name of the pet",
+                        "in": "formData",
+                        "name": "name",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Updated status of the pet",
+                        "in": "formData",
+                        "name": "status",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "responses": {
+                    "405": {
+                        "description": "Invalid input"
+                    }
+                },
+                "security": [
+                    {
+                        "petstore_auth": [
+                            "write:pets",
+                            "read:pets"
+                        ]
+                    }
+                ],
+                "summary": "Submit a comment on a review or a story.",
+                "tags": [
+                    "Comments"
+                ]
+            }
+        },
+        "/answers.json": {
+            "get": {
+                "description": "Returns answers and related data.",
+                "operationId": "displayAnswers",
+                "parameters": [
+                    {
+                        "collectionFormat": "multi",
+                        "description": "Value of API Key",
+                        "in": "query",
+                        "name": "passkey",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "collectionFormat": "multi",
+                        "description": "Version of API",
+                        "in": "query",
+                        "name": "apiVersion",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "items": {
+                                "$ref": "#/definitions/Pet"
+                            },
+                            "type": "array"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid tag value"
+                    }
+                },
+                "security": [
+                    {
+                        "petstore_auth": [
+                            "write:pets",
+                            "read:pets"
+                        ]
+                    }
+                ],
+                "summary": "Returns answers and related data.",
+                "tags": [
+                    "Answers"
+                ]
+            }
+        },
+        "/submitanswer.json": {
+            "post": {
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "description": "Submit answers on questions.",
+                "operationId": "submitReviewComment",
+                "parameters": [
+                    {
+                        "description": "ID of pet that needs to be updated",
+                        "in": "path",
+                        "name": "petId",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Updated name of the pet",
+                        "in": "formData",
+                        "name": "name",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Updated status of the pet",
+                        "in": "formData",
+                        "name": "status",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "responses": {
+                    "405": {
+                        "description": "Invalid input"
+                    }
+                },
+                "security": [
+                    {
+                        "petstore_auth": [
+                            "write:pets",
+                            "read:pets"
+                        ]
+                    }
+                ],
+                "summary": "Submit answers on questions.",
+                "tags": [
+                    "Answers"
+                ]
+            }
+        },
+        "/authors.json": {
+            "get": {
+                "description": "Returns data about Content Authors.",
+                "operationId": "displayProfile",
+                "parameters": [
+                    {
+                        "collectionFormat": "multi",
+                        "description": "Value of API Key",
+                        "in": "query",
+                        "name": "passkey",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "collectionFormat": "multi",
+                        "description": "Version of API",
+                        "in": "query",
+                        "name": "apiVersion",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "items": {
+                                "$ref": "#/definitions/Pet"
+                            },
+                            "type": "array"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid tag value"
+                    }
+                },
+                "security": [
+                    {
+                        "petstore_auth": [
+                            "write:pets",
+                            "read:pets"
+                        ]
+                    }
+                ],
+                "summary": "Returns data about Content Authors.",
+                "tags": [
+                    "Profiles"
+                ]
+            }
+        },
+        "/authenticateuser.json": {
+            "post": {
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "description": "Authenticate an auther using their email address.",
+                "operationId": "authenticateUser",
+                "parameters": [
+                    {
+                        "description": "ID of pet that needs to be updated",
+                        "in": "path",
+                        "name": "petId",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Updated name of the pet",
+                        "in": "formData",
+                        "name": "name",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Updated status of the pet",
+                        "in": "formData",
+                        "name": "status",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "responses": {
+                    "405": {
+                        "description": "Invalid input"
+                    }
+                },
+                "security": [
+                    {
+                        "petstore_auth": [
+                            "write:pets",
+                            "read:pets"
+                        ]
+                    }
+                ],
+                "summary": "Authenticate an auther using their email address.",
+                "tags": [
+                    "Profiles"
+                ]
+            }
+        },
+        "/uploadphoto.json": {
+            "post": {
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "description": "Upload photos for a review, question, answer, story or comment.",
+                "operationId": "uploadPhoto",
+                "parameters": [
+                    {
+                        "description": "ID of pet that needs to be updated",
+                        "in": "path",
+                        "name": "petId",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Updated name of the pet",
+                        "in": "formData",
+                        "name": "name",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Updated status of the pet",
+                        "in": "formData",
+                        "name": "status",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "responses": {
+                    "405": {
+                        "description": "Invalid input"
+                    }
+                },
+                "security": [
+                    {
+                        "petstore_auth": [
+                            "write:pets",
+                            "read:pets"
+                        ]
+                    }
+                ],
+                "summary": "Upload photos for a review, question, answer, story or comment.",
+                "tags": [
+                    "Media"
+                ]
+            }
+        },
+        "/uploadvideo.json": {
+            "post": {
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "description": "Upload videos for a review, question, answer, story or comment.",
+                "operationId": "uploadVideo",
+                "parameters": [
+                    {
+                        "description": "ID of pet that needs to be updated",
+                        "in": "path",
+                        "name": "petId",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Updated name of the pet",
+                        "in": "formData",
+                        "name": "name",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Updated status of the pet",
+                        "in": "formData",
+                        "name": "status",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "responses": {
+                    "405": {
+                        "description": "Invalid input"
+                    }
+                },
+                "security": [
+                    {
+                        "petstore_auth": [
+                            "write:pets",
+                            "read:pets"
+                        ]
+                    }
+                ],
+                "summary": "Upload videos for a review, question, answer, story or comment.",
+                "tags": [
+                    "Media"
+                ]
+            }
+        },
+        "/products.json": {
+            "get": {
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "description": "Returns Product data.",
+                "operationId": "displayProucts",
+                "parameters": [
+                    {
+                        "description": "ID of pet that needs to be updated",
+                        "in": "path",
+                        "name": "petId",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Updated name of the pet",
+                        "in": "formData",
+                        "name": "name",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Updated status of the pet",
+                        "in": "formData",
+                        "name": "status",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "responses": {
+                    "405": {
+                        "description": "Invalid input"
+                    }
+                },
+                "security": [
+                    {
+                        "petstore_auth": [
+                            "write:pets",
+                            "read:pets"
+                        ]
+                    }
+                ],
+                "summary": "Returns Product data.",
+                "tags": [
+                    "Products Catalog"
+                ]
+            }
+        },
+        "/categories.json": {
+            "get": {
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "description": "Returns Categories and related data.",
+                "operationId": "displayCategories",
+                "parameters": [
+                    {
+                        "description": "ID of pet that needs to be updated",
+                        "in": "path",
+                        "name": "petId",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Updated name of the pet",
+                        "in": "formData",
+                        "name": "name",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Updated status of the pet",
+                        "in": "formData",
+                        "name": "status",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "responses": {
+                    "405": {
+                        "description": "Invalid input"
+                    }
+                },
+                "security": [
+                    {
+                        "petstore_auth": [
+                            "write:pets",
+                            "read:pets"
+                        ]
+                    }
+                ],
+                "summary": "Returns Categories and related data.",
+                "tags": [
+                    "Products Catalog"
+                ]
+            }
+        },
+        "/statistics.json": {
+            "get": {
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "description": "Returns Product-based Review Statistics. This method has been optimized and was created for inline ratings display.",
+                "operationId": "displayStats",
+                "parameters": [
+                    {
+                        "description": "ID of pet that needs to be updated",
+                        "in": "path",
+                        "name": "petId",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Updated name of the pet",
+                        "in": "formData",
+                        "name": "name",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Updated status of the pet",
+                        "in": "formData",
+                        "name": "status",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "responses": {
+                    "405": {
+                        "description": "Invalid input"
+                    }
+                },
+                "security": [
+                    {
+                        "petstore_auth": [
+                            "write:pets",
+                            "read:pets"
+                        ]
+                    }
+                ],
+                "summary": "Returns Product-based Review Statistics. This method has been optimized and was created for inline ratings display.",
+                "tags": [
+                    "Statistics"
+                ]
+            }
+        },
+        "/submitfeedback.json": {
+            "post": {
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "description": "Submit feedback on a review, question, answer, story, review comment, or story comment.",
+                "operationId": "submitfeedback",
+                "parameters": [
+                    {
+                        "description": "The media-type type of the request body. Value must be application/x-www-form-urlencoded.",
+                        "in": "header",
+                        "name": "Content-Type",
+                        "required": true,
+                        "type": "string"
+                    },                    {
+                        "description": "IP address of content author. See Authenticity Tutorial for more information.",
+                        "in": "header",
+                        "name": "X-Forwarded-For",
+                        "required": false,
+                        "type": "string"
+                    },                    {
+                        "description": "The API version, e.g. 5.4.",
+                        "in": "path",
+                        "name": "ApiVersion",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "ID of the content with which the feedback is associated",
+                        "in": "formData",
+                        "name": "ContentId",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Type of content with which the feedback is associated (review, story, question, answer, story_comment, review_comment)",
+                        "in": "formData",
+                        "name": "ContentType",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Type of feedback (inappropriate, helpfulness)",
+                        "in": "formData",
+                        "name": "FeedbackType",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Response format (xml or json)",
+                        "in": "path",
+                        "name": "FORMAT",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "API key is required to authenticate API user and check permission to access particular client's data.",
+                        "in": "formData",
+                        "name": "PassKey",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Helpfulness vote for this content. Valid votes are: Positive, Negative, UNDO. This parameter is only required for FeedbackType=helpfulness.",
+                        "in": "formData",
+                        "name": "Vote",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "User's external ID. May be required for Positive, Negative and Inappropriate depending on configuration. Always required for UNDO.",
+                        "in": "formData",
+                        "name": "UserId",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Reason this content has been flagged as inappropriate",
+                        "in": "formData",
+                        "name": "ReasonText",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "responses": {
+                    "405": {
+                        "description": "Invalid input"
+                    }
+                },
+                "security": [
+                    {
+                        "petstore_auth": [
+                            "write:pets",
+                            "read:pets"
+                        ]
+                    }
+                ],
+                "summary": "Submit feedback on a review, question, answer, story, review comment, or story comment.",
+                "tags": [
+                    "Submit Feedback"
+                ]
+            }
         }
+
     },
     "schemes": [
-        "http",
-        "https"
+        "http"
     ],
     "securityDefinitions": {
         "api_key": {
@@ -259,7 +1222,6 @@
             "type": "oauth2"
         }
     },
-    "swagger": "2.0",
     "tags": [
         {
             "description": "Reviews",
