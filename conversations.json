@@ -407,19 +407,135 @@
                 "operationId": "displayQuestions",
                 "parameters": [
                     {
-                        "collectionFormat": "multi",
-                        "description": "Value of API Key",
+                        "description": "Version of API",
                         "in": "query",
-                        "name": "passkey",
+                        "name": "ApiVersion",
                         "required": true,
                         "type": "string"
                     },
                     {
-                        "collectionFormat": "multi",
-                        "description": "Version of API",
+                        "description": "API key is required to authenticate API user and check permission to access particular client's data.",
                         "in": "query",
-                        "name": "apiVersion",
+                        "name": "PassKey",
                         "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Response format (xml or json)",
+                        "in": "path",
+                        "name": "[FORMAT]",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Attributes to be included when returning content. For example, if includes are requested along with the &attributes=ModeratorCodes parameter, both the includes and the results will contain moderator codes. In order to filter by ModeratorCode, you must request the ModeratorCodes attribute parameter.",
+                        "in": "query",
+                        "name": "Attributes",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Callback function name used with JSONP. Value is a string consisting of the following characters: a-z,A-Z,0-9,_ (excluding comma). See <a href=\"https://developer.bazaarvoice.com/apis/conversations/tutorials/jsonp\">Cross Domain Requests Using JSONP</a> for more information.",
+                        "in": "query",
+                        "name": "Callback",
+                        "required": false,
+                        "type": "string"
+                    },
+                   {
+                        "description": "Boolean flag indicating whether to exclude content from other products in the same family as the requested product. For example, \"&filter=productid:eq:1101&excludeFamily=true\" limits returned content to just that of product 1101 and not any of the products in the same family. If a value is not defined, content on all products in the family will be returned.",
+                        "in": "query",
+                        "name": "ExcludeFamily",
+                        "required": false,
+                        "type": "boolean",
+                        "default": false
+                    },
+                    {
+                        "description": "Filter criteria for primary content of the query. Multiple filter criteria are supported.",
+                        "in": "query",
+                        "name": "Filter",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Filtering option for included nested content. TYPE can be any included nested content. e.g. Answers for Questions.",
+                        "in": "query",
+                        "name": "Filter_[TYPE]",
+                        "required": false,
+                        "type": "string"
+                    },   
+                    {
+                        "description": "Related subjects to be included (e.g. Products, Categories, Authors, or Questions).",
+                        "in": "query",
+                        "name": "Include",
+                        "required": false,
+                        "type": "string",
+                        "default": "Returns only Questions if not specified"
+                    },
+                    {
+                        "description": "Max number of records returned. An error is returned if the value passed exceeds 100.",
+                        "in": "query",
+                        "name": "Limit",
+                        "required": false,
+                        "type": "integer",
+                        "default": 10
+                    },
+                    {
+                        "description": "Limit option for the nested content type returned. TYPE can be any nested content. e.g. Answers for Questions. An error is returned if the value passed exceeds 20.",
+                        "in": "query",
+                        "name": "Limit_TYPE",
+                        "required": false,
+                        "type": "integer",
+                        "default": 10
+                    },
+
+                    {
+                        "description": "Locale to display Labels, Configuration, Product Attributes and Category Attributes in. The default value is the locale defined in the display associated with the API key.",
+                        "in": "query",
+                        "name": "Locale",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Index at which to return results. By default, indexing begins at 0 when you issue a query. Using Limit=100, Offset=0 returns results 0-99. When changing this to Offset=1, results 1-100 are returned.",
+                        "in": "query",
+                        "name": "Offset",
+                        "required": false,
+                        "type": "integer",
+                        "default": 0
+                    },
+                    {
+                        "description": "Full-text search string used to find UGC. For more information about what fields are searched by default, see the <a href=\"https://developer.bazaarvoice.com/docs/read/conversations/ \">Conversations API page</a>.  <span class='note'>Note:</span> This invalidates sort options due to the fact that search takes precedence in returned data.",
+                        "in": "query",
+                        "name": "Search",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Searching option for included content followed by full-text search string. See the Conversations API page for examples of searching for included data. <span class='note'>Note:</span> This invalidates sort options due to the fact that search takes precedence in returned data.",
+                        "in": "query",
+                        "name": "Search_[TYPE]",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Sort criteria for primary content type of the query. Sort order is required (asc or desc). Multi-attribute sorting for each content/subject type is supported.",
+                        "in": "query",
+                        "name": "Sort",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Sorting option for nested content. TYPE can be any nested content. e.g. Answers for Questions.",
+                        "in": "query",
+                        "name": "Sort_[TYPE]",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "The type of statistics that will be calculated on included subjects. Available content types are: Reviews, Questions, Answers, Stories. Note: Not all statistical content types apply to every possible include.",
+                        "in": "query",
+                        "name": "Stats",
+                        "required": false,
                         "type": "string"
                     }
                 ],
@@ -464,23 +580,220 @@
                 "operationId": "submitStory",
                 "parameters": [
                     {
-                        "description": "ID of pet that needs to be updated",
-                        "in": "path",
-                        "name": "petId",
+                        "description": "Contains the text of the question summary. Only a single line of text is allowed.",
+                        "in": "query",
+                        "name": "QuestionSummary",
                         "required": true,
                         "type": "string"
                     },
                     {
-                        "description": "Updated name of the pet",
-                        "in": "formData",
-                        "name": "name",
+                       "description": "The API version, e.g. 5.4.",
+                        "in": "query",
+                        "name": "ApiVersion",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "API key is required to authenticate API user and check permission to access particular client's data.",
+                        "in": "query",
+                        "name": "PassKey",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Response format (xml or json)",
+                        "in": "path",
+                        "name": "[FORMAT]",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "The submission action to take -- either 'Preview' or 'Submit'. 'Preview' will show a draft of the content to be submitted; 'Submit' will submit the content. Note that if Action=Submit, the request must be an HTTP POST.",
+                        "in": "query",
+                        "name": "Action",
+                        "required": false,
+                        "type": "string"
+                    },                    
+                    {
+                        "description": "A concrete example of the parameter might be 'AdditionalField_Seat' with a value of '24F' (describing the seat number at a stadium or on a plane).",
+                        "in": "query",
+                        "name": "AdditionalField_<Dimension-External-Id>",
+                        "required": false,
+                        "type": "string"
+                    },                    
+                    {
+                        "description": "Boolean indicating whether or not the user agreed to the terms and conditions. Required depending on the client's settings.",
+                        "in": "query",
+                        "name": "AgreedToTermsAndConditions",
+                        "required": false,
+                        "type": "string"
+                    },      
+                    {
+                        "description": "Callback function name used with JSONP. Value is a string consisting of the following characters: a-z,A-Z,0-9,_ (excluding comma). See <a href=\"https://developer.bazaarvoice.com/apis/conversations/tutorials/jsonp\">Cross Domain Requests Using JSONP</a> for more information.",
+                        "in": "query",
+                        "name": "Callback",
                         "required": false,
                         "type": "string"
                     },
                     {
-                        "description": "Updated status of the pet",
-                        "in": "formData",
-                        "name": "status",
+                        "description": "Arbitrary text that may be saved alongside content to indicate vehicle by which content was captured, e.g. \"post-purchase email\".",
+                        "in": "query",
+                        "name": "CampaignId",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "The id of the category that this content is being submitted on. One of ProductId or CategoryId must be provided.",
+                        "in": "query",
+                        "name": "CategoryId",
+                        "required": false,
+                        "type": "string"
+                    },
+
+                    {
+                        "description": "Some examples of this parameter include the following. Each is followed by possible values. <ul><li>ContextDataValue_PurchaserRank - \"top\", \"top10\", \"top100\", \"top1000\"</li><li>ContextDataValue_Purchaser - \"yes\", \"no\"</li><li>ContextDataValue_Age - \"under21\", \"21to34\", \"35to44\", \"45to54\", \"55to64\", \"over65\"</li><li>ContextDataValue_Gender - \"male\", \"female\"</li></ul>",
+                        "in": "query",
+                        "name": "ContextDataValue_<Dimension-External-Id>",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Fingerprint of content author's device. See the <a href=\"https://developer.bazaarvoice.com/apis/conversations/tutorials/authenticity\">Authenticity Tutorial</a> for more information.",
+                        "in": "query",
+                        "name": "fp",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Email address where the submitter will receive the confirmation email. If you are configured to use hosted email authentication, this parameter is required. See the Authenticate User method for more information on hosted authentication.",
+                        "in": "query",
+                        "name": "HostedAuthentication_AuthenticationEmail",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "URL of the link contained in the user authentication email. This should point to a landing page where a web application exists to complete the user authentication process. The host for the URL must be one of the domains configured for the client. The link in the email will contain a user authentication token (authtoken) that is used to verify the submitter. If you are configured to use hosted email authentication, this parameter is required. See the hosted authentication tutorial for more information.",
+                        "in": "query",
+                        "name": "HostedAuthentication_CallbackUrl",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Boolean value. If IsUserAnonymous is true, the user's display name will not be shown with the question. This parameter is unrelated to UserId. This parameter can be turned off on a per client basis.",
+                        "in": "query",
+                        "name": "IsUserAnonymous",
+                        "required": false,
+                        "type": "boolean"
+                    },
+                    {
+                        "description": "Locale to display Labels, Configuration, Product Attributes and Category Attributes in. The default value is the locale defined in the display associated with the API key. ",
+                        "in": "query",
+                        "name": "Locale",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Value is caption text for the photo URL with the same value of <n>.",
+                        "in": "query",
+                        "name": "PhotoCaption_<n>",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Value is a Bazaarvoice URL of a photo uploaded using the Data API, where <n> is a non-negative integer.",
+                        "in": "query",
+                        "name": "PhotoUrl_<n>",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "The id of the product that this content is being submitted on. One of ProductId or CategoryId must be provided.",
+                        "in": "query",
+                        "name": "ProductId",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Value is non-negative integer representing the product external ID of the <n>'th product recommendation (for Social Recommendations)",
+                        "in": "query",
+                        "name": "ProductRecommendationId_<n>",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Contains the text of the question details. Multiple lines of text are allowed.",
+                        "in": "query",
+                        "name": "QuestionDetails",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Boolean indicating whether or not the user wants to be notified when his/her content is published.",
+                        "in": "query",
+                        "name": "SendEmailAlertWhenPublished",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "A concrete example of the parameter might be 'tag_Pro_1'. Valid values could be any free-form text. <n> should be a non-negative integer starting at the number 1.",
+                        "in": "query",
+                        "name": "tag_<Dimension-External-Id>_<n>",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Boolean indicating whether or not the tag applies to the user. A concrete example might be 'tagid_Pro/EasyToUse=true'.",
+                        "in": "query",
+                        "name": "tagid_<Dimension-External-Id>/<Tag-Label>",
+                        "required": false,
+                        "type": "boolean"
+                    },
+                    {
+                        "description": "Value of the encrypted user. This parameter demonstrates that a user has been authenticated. Note that the UserId parameter does not contain authentication information and should not be used for hosted authentication. See the <a href=\"https://developer.bazaarvoice.com/docs/read/conversations/profiles/authenticate\">Authenticate User</a> method for more information.",
+                        "in": "query",
+                        "name": "User",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "User's email address",
+                        "in": "query",
+                        "name": "UserEmail",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "User's external ID",
+                        "in": "query",
+                        "name": "UserId",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "User location text",
+                        "in": "query",
+                        "name": "UserLocation",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "User nickname display text",
+                        "in": "query",
+                        "name": "UserNickname",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Value is caption text for the video URL with the same value of <n>.",
+                        "in": "query",
+                        "name": "VideoCaption_<n>",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Value is valid YouTube or Bazaarvoice video-upload URL where <n> is a non-negative integer. ",
+                        "in": "query",
+                        "name": "VideoUrl_<n>",
                         "required": false,
                         "type": "string"
                     }
@@ -508,25 +821,263 @@
                 ]
             }
         },
+        "/relatedquestions.json": {
+           "get": {
+                "description": "Returns Related Questions.",
+                "operationId": "displayRelatedQuestions",
+                "parameters": [
+                    {
+                        "description": "Version of API",
+                        "in": "query",
+                        "name": "ApiVersion",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "API key is required to authenticate API user and check permission to access particular client's data.",
+                        "in": "query",
+                        "name": "PassKey",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Response format (xml or json)",
+                        "in": "path",
+                        "name": "[FORMAT]",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Value of the type of thank you page serving the related questions. Supported values include \"Review\" or \"Answer\" only.",
+                        "in": "query",
+                        "name": "ContentType",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Callback function name used with JSONP. Value is a string consisting of the following characters: a-z,A-Z,0-9,_ (excluding comma). See <a href=\"https://developer.bazaarvoice.com/apis/conversations/tutorials/jsonp\">Cross Domain Requests Using JSONP</a> for more information.",
+                        "in": "query",
+                        "name": "Callback",
+                        "required": false,
+                        "type": "string"
+                    },
+                   {
+                        "description": "The id of the category for which you want to find related questions. Either ProductId or CategoryId must be provided.",
+                        "in": "query",
+                        "name": "CategoryId",
+                        "required": false,
+                        "type": "boolean"
+                    },
+                    {
+                        "description": "Related subjects to be included (e.g. Products, Categories, Authors, or Questions).",
+                        "in": "query",
+                        "name": "Include",
+                        "required": false,
+                        "type": "string",
+                        "default": "Will only return Questions if not specified"
+                    },
+                    {
+                        "description": "Max number of records returned. An error is returned if the value passed exceeds 100.",
+                        "in": "query",
+                        "name": "Limit",
+                        "required": false,
+                        "type": "integer",
+                        "default": 10
+                    },
+                    {
+                        "description": "Locale to display Labels, Configuration, Product Attributes and Category Attributes in. The default value is the locale defined in the display associated with the API key.",
+                        "in": "query",
+                        "name": "Locale",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Index at which to return results. By default, indexing begins at 0 when you issue a query. Using Limit=100, Offset=0 returns results 0-99. When changing this to Offset=1, results 1-100 are returned.",
+                        "in": "query",
+                        "name": "Offset",
+                        "required": false,
+                        "type": "integer",
+                        "default": 0
+                    },
+                    {
+                        "description": "The id of the product that this content is being submitted on. One of ProductId or CategoryId must be provided.",
+                        "in": "query",
+                        "name": "ProductId",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Question ID to ignore (e.g., if you are already looking at that question and don't want it to display as a related question)",
+                        "in": "query",
+                        "name": "QuestionId",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Comma-separated list of related product IDs. No initial existence checking is done on the RelatedProducts parameter. If you pass in a ProductId that doesn't exist, it gets ignored silently.",
+                        "in": "query",
+                        "name": "RelatedProducts",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Value of the encrypted user. This parameter demonstrates that a user has been authenticated. Note that the UserId parameter does not contain authentication information and should not be used for hosted authentication. See the Authenticate User method for more information.",
+                        "in": "query",
+                        "name": "User",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "User's external ID. May not be used if User parameter is present.",
+                        "in": "query",
+                        "name": "UserId",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "items": {
+                                "$ref": "#/definitions/Pet"
+                            },
+                            "type": "array"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid tag value"
+                    }
+                },
+                "security": [
+                    {
+                        "petstore_auth": [
+                            "write:pets",
+                            "read:pets"
+                        ]
+                    }
+                ],
+                "summary": "Returns Related Questions.",
+                "tags": [
+                    "Questions"
+                ]
+            }
+        },
         "/comments.json": {
             "get": {
                 "description": "Returns comments posted on reviews or stories.",
                 "operationId": "displayComments",
                 "parameters": [
                     {
-                        "collectionFormat": "multi",
-                        "description": "Value of API Key",
+                        "description": "Version of API",
                         "in": "query",
-                        "name": "passkey",
+                        "name": "ApiVersion",
                         "required": true,
                         "type": "string"
                     },
                     {
-                        "collectionFormat": "multi",
-                        "description": "Version of API",
+                        "description": "API key is required to authenticate API user and check permission to access particular client's data.",
                         "in": "query",
-                        "name": "apiVersion",
+                        "name": "PassKey",
                         "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Response format (xml or json)",
+                        "in": "path",
+                        "name": "[FORMAT]",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Attributes to be included when returning content. For example, if includes are requested along with the &attributes=ModeratorCodes parameter, both the includes and the results will contain moderator codes. In order to filter by ModeratorCode, you must request the ModeratorCodes attribute parameter.",
+                        "in": "query",
+                        "name": "Attributes",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Callback function name used with JSONP. Value is a string consisting of the following characters: a-z,A-Z,0-9,_ (excluding comma). See <a href=\"https://developer.bazaarvoice.com/apis/conversations/tutorials/jsonp\">Cross Domain Requests Using JSONP</a> for more information.",
+                        "in": "query",
+                        "name": "Callback",
+                        "required": false,
+                        "type": "string"
+                    },
+                   {
+                        "description": "Boolean flag indicating whether to exclude content from other products in the same family as the requested product. For example, \"&filter=productid:eq:1101&excludeFamily=true\" limits returned content to just that of product 1101 and not any of the products in the same family. If a value is not defined, content on all products in the family will be returned.",
+                        "in": "query",
+                        "name": "ExcludeFamily",
+                        "required": false,
+                        "type": "boolean"
+                    },
+                    {
+                        "description": "Filter criteria for primary content of the query. Multiple filter criteria are supported.",
+                        "in": "query",
+                        "name": "Filter",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Related subjects to be included (e.g. Products, Categories, Authors, or Questions).",
+                        "in": "query",
+                        "name": "Include",
+                        "required": false,
+                        "type": "string",
+                        "default": "Returns only Comments if not specified"
+                    },
+                    {
+                        "description": "Max number of records returned. An error is returned if the value passed exceeds 100.",
+                        "in": "query",
+                        "name": "Limit",
+                        "required": false,
+                        "type": "integer",
+                        "default": 10
+                    },
+                    {
+                        "description": "Locale to display Labels, Configuration, Product Attributes and Category Attributes in. The default value is the locale defined in the display associated with the API key.",
+                        "in": "query",
+                        "name": "Locale",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Index at which to return results. By default, indexing begins at 0 when you issue a query. Using Limit=100, Offset=0 returns results 0-99. When changing this to Offset=1, results 1-100 are returned.",
+                        "in": "query",
+                        "name": "Offset",
+                        "required": false,
+                        "type": "integer",
+                        "default": 0
+                    },
+                    {
+                        "description": "Full-text search string used to find UGC. For more information about what fields are searched by default, see the <a href=\"https://developer.bazaarvoice.com/docs/read/conversations/ \">Conversations API page</a>.  <span class='note'>Note:</span> This invalidates sort options due to the fact that search takes precedence in returned data.",
+                        "in": "query",
+                        "name": "Search",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Searching option for included content followed by full-text search string. See the Conversations API page for examples of searching for included data. <span class='note'>Note:</span> This invalidates sort options due to the fact that search takes precedence in returned data.",
+                        "in": "query",
+                        "name": "Search_[TYPE]",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Sort criteria for primary content type of the query. Sort order is required (asc or desc). Multi-attribute sorting for each content/subject type is supported.",
+                        "in": "query",
+                        "name": "Sort",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "The type of statistics that will be calculated on included subjects. Available content types are: Reviews, Questions, Answers, Stories. Note: Not all statistical content types apply to every possible include.",
+                        "in": "query",
+                        "name": "Stats",
+                        "required": false,
                         "type": "string"
                     }
                 ],
@@ -571,23 +1122,177 @@
                 "operationId": "submitReviewComment",
                 "parameters": [
                     {
-                        "description": "ID of pet that needs to be updated",
-                        "in": "path",
-                        "name": "petId",
+                        "description": "Contains the text of the comment.",
+                        "in": "query",
+                        "name": "CommentText",
                         "required": true,
                         "type": "string"
                     },
                     {
-                        "description": "Updated name of the pet",
-                        "in": "formData",
-                        "name": "name",
+                       "description": "The API version, e.g. 5.4.",
+                        "in": "query",
+                        "name": "ApiVersion",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "API key is required to authenticate API user and check permission to access particular client's data.",
+                        "in": "query",
+                        "name": "PassKey",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Response format (xml or json)",
+                        "in": "path",
+                        "name": "[FORMAT]",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Callback function name used with JSONP. Value is a string consisting of the following characters: a-z,A-Z,0-9,_ (excluding comma). See <a href=\"https://developer.bazaarvoice.com/apis/conversations/tutorials/jsonp\">Cross Domain Requests Using JSONP</a> for more information.",
+                        "in": "query",
+                        "name": "Callback",
                         "required": false,
                         "type": "string"
                     },
                     {
-                        "description": "Updated status of the pet",
-                        "in": "formData",
-                        "name": "status",
+                        "description": "Arbitrary text that may be saved alongside content to indicate vehicle by which content was captured, e.g. \"post-purchase email\".",
+                        "in": "query",
+                        "name": "CampaignId",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Some examples of this parameter include the following. Each is followed by possible values. <ul><li>ContextDataValue_PurchaserRank - \"top\", \"top10\", \"top100\", \"top1000\"</li><li>ContextDataValue_Purchaser - \"yes\", \"no\"</li><li>ContextDataValue_Age - \"under21\", \"21to34\", \"35to44\", \"45to54\", \"55to64\", \"over65\"</li><li>ContextDataValue_Gender - \"male\", \"female\"</li></ul>",
+                        "in": "query",
+                        "name": "ContextDataValue_<Dimension-External-Id>",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Fingerprint of content author's device. See the <a href=\"https://developer.bazaarvoice.com/apis/conversations/tutorials/authenticity\">Authenticity Tutorial</a> for more information.",
+                        "in": "query",
+                        "name": "fp",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Email address where the submitter will receive the confirmation email. If you are configured to use hosted email authentication, this parameter is required. See the Authenticate User method for more information on hosted authentication.",
+                        "in": "query",
+                        "name": "HostedAuthentication_AuthenticationEmail",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "URL of the link contained in the user authentication email. This should point to a landing page where a web application exists to complete the user authentication process. The host for the URL must be one of the domains configured for the client. The link in the email will contain a user authentication token (authtoken) that is used to verify the submitter. If you are configured to use hosted email authentication, this parameter is required. See the hosted authentication tutorial for more information.",
+                        "in": "query",
+                        "name": "HostedAuthentication_CallbackUrl",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Locale to display Labels, Configuration, Product Attributes and Category Attributes in. The default value is the locale defined in the display associated with the API key. ",
+                        "in": "query",
+                        "name": "Locale",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Value is caption text for the photo URL with the same value of <n>.",
+                        "in": "query",
+                        "name": "PhotoCaption_<n>",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Value is a Bazaarvoice URL of a photo uploaded using the Data API, where <n> is a non-negative integer.",
+                        "in": "query",
+                        "name": "PhotoUrl_<n>",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Value is non-negative integer representing the product external ID of the <n>'th product recommendation (for Social Recommendations)",
+                        "in": "query",
+                        "name": "ProductRecommendationId_<n>",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "The id of the review that this comment is being submitted on. One ReviewId or StoryId is required.",
+                        "in": "query",
+                        "name": "ReviewId",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Boolean indicating whether or not the user wants to be notified when his/her content is published.",
+                        "in": "query",
+                        "name": "SendEmailAlertWhenPublished",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "The id of the story that this comment is being submitted on. One ReviewId or StoryId is required.",
+                        "in": "query",
+                        "name": "StoryId",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Value is content title text.",
+                        "in": "query",
+                        "name": "Title",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Value of the encrypted user. This parameter demonstrates that a user has been authenticated. Note that the UserId parameter does not contain authentication information and should not be used for hosted authentication. See the <a href=\"https://developer.bazaarvoice.com/docs/read/conversations/profiles/authenticate\">Authenticate User</a> method for more information.",
+                        "in": "query",
+                        "name": "User",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "User's email address",
+                        "in": "query",
+                        "name": "UserEmail",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "User's external ID",
+                        "in": "query",
+                        "name": "UserId",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "User location text",
+                        "in": "query",
+                        "name": "UserLocation",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "User nickname display text",
+                        "in": "query",
+                        "name": "UserNickname",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Value is caption text for the video URL with the same value of <n>.",
+                        "in": "query",
+                        "name": "VideoCaption_<n>",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Value is valid YouTube or Bazaarvoice video-upload URL where <n> is a non-negative integer. ",
+                        "in": "query",
+                        "name": "VideoUrl_<n>",
                         "required": false,
                         "type": "string"
                     }
@@ -621,19 +1326,111 @@
                 "operationId": "displayAnswers",
                 "parameters": [
                     {
-                        "collectionFormat": "multi",
-                        "description": "Value of API Key",
+                        "description": "Version of API",
                         "in": "query",
-                        "name": "passkey",
+                        "name": "ApiVersion",
                         "required": true,
                         "type": "string"
                     },
                     {
-                        "collectionFormat": "multi",
-                        "description": "Version of API",
+                        "description": "API key is required to authenticate API user and check permission to access particular client's data.",
                         "in": "query",
-                        "name": "apiVersion",
+                        "name": "PassKey",
                         "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Response format (xml or json)",
+                        "in": "path",
+                        "name": "[FORMAT]",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Attributes to be included when returning content. For example, if includes are requested along with the &attributes=ModeratorCodes parameter, both the includes and the results will contain moderator codes. In order to filter by ModeratorCode, you must request the ModeratorCodes attribute parameter.",
+                        "in": "query",
+                        "name": "Attributes",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Callback function name used with JSONP. Value is a string consisting of the following characters: a-z,A-Z,0-9,_ (excluding comma). See <a href=\"https://developer.bazaarvoice.com/apis/conversations/tutorials/jsonp\">Cross Domain Requests Using JSONP</a> for more information.",
+                        "in": "query",
+                        "name": "Callback",
+                        "required": false,
+                        "type": "string"
+                    },
+                   {
+                        "description": "Boolean flag indicating whether to exclude content from other products in the same family as the requested product. For example, \"&filter=productid:eq:1101&excludeFamily=true\" limits returned content to just that of product 1101 and not any of the products in the same family. If a value is not defined, content on all products in the family will be returned.",
+                        "in": "query",
+                        "name": "ExcludeFamily",
+                        "required": false,
+                        "type": "boolean",
+                        "default": false
+                    },
+                    {
+                        "description": "Filter criteria for primary content of the query. Multiple filter criteria are supported.",
+                        "in": "query",
+                        "name": "Filter",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Related subjects to be included (e.g. Products, Categories, Authors, or Questions).",
+                        "in": "query",
+                        "name": "Include",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Max number of records returned. An error is returned if the value passed exceeds 100.",
+                        "in": "query",
+                        "name": "Limit",
+                        "required": false,
+                        "type": "integer",
+                        "default": 10
+                    },
+                    {
+                        "description": "Locale to display Labels, Configuration, Product Attributes and Category Attributes in. The default value is the locale defined in the display associated with the API key.",
+                        "in": "query",
+                        "name": "Locale",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Index at which to return results. By default, indexing begins at 0 when you issue a query. Using Limit=100, Offset=0 returns results 0-99. When changing this to Offset=1, results 1-100 are returned.",
+                        "in": "query",
+                        "name": "Offset",
+                        "required": false,
+                        "type": "integer",
+                        "default": 0
+                    },
+                    {
+                        "description": "Full-text search string used to find UGC. For more information about what fields are searched by default, see the <a href=\"https://developer.bazaarvoice.com/docs/read/conversations/ \">Conversations API page</a>.  <span class='note'>Note:</span> This invalidates sort options due to the fact that search takes precedence in returned data.",
+                        "in": "query",
+                        "name": "Search",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Searching option for included content followed by full-text search string. See the Conversations API page for examples of searching for included data. <span class='note'>Note:</span> This invalidates sort options due to the fact that search takes precedence in returned data.",
+                        "in": "query",
+                        "name": "Search_[TYPE]",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Sort criteria for primary content type of the query. Sort order is required (asc or desc). Multi-attribute sorting for each content/subject type is supported.",
+                        "in": "query",
+                        "name": "Sort",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "The type of statistics that will be calculated on included subjects. Available content types are: Reviews, Questions, Answers, Stories. Note: Not all statistical content types apply to every possible include.",
+                        "in": "query",
+                        "name": "Stats",
+                        "required": false,
                         "type": "string"
                     }
                 ],
@@ -678,23 +1475,184 @@
                 "operationId": "submitReviewComment",
                 "parameters": [
                     {
-                        "description": "ID of pet that needs to be updated",
-                        "in": "path",
-                        "name": "petId",
+                        "description": "Contains the text of the answer.",
+                        "in": "query",
+                        "name": "AnswerText",
                         "required": true,
                         "type": "string"
                     },
                     {
-                        "description": "Updated name of the pet",
-                        "in": "formData",
-                        "name": "name",
+                       "description": "The API version, e.g. 5.4.",
+                        "in": "query",
+                        "name": "ApiVersion",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "API key is required to authenticate API user and check permission to access particular client's data.",
+                        "in": "query",
+                        "name": "PassKey",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Response format (xml or json)",
+                        "in": "path",
+                        "name": "[FORMAT]",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "The id of the question that this answer is being submitted on.",
+                        "in": "query",
+                        "name": "QuestionId",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "The submission action to take -- either 'Preview' or 'Submit'. 'Preview' will show a draft of the content to be submitted; 'Submit' will submit the content. Note that if Action=Submit, the request must be an HTTP POST.",
+                        "in": "query",
+                        "name": "Action",
                         "required": false,
                         "type": "string"
                     },
                     {
-                        "description": "Updated status of the pet",
-                        "in": "formData",
-                        "name": "status",
+                        "description": "A concrete example of the parameter might be 'AdditionalField_Seat' with a value of '24F' (describing the seat number at a stadium or on a plane).",
+                        "in": "query",
+                        "name": "AdditionalField_<Dimension-External-Id>",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Boolean indicating whether or not the user agreed to the terms and conditions. Required depending on the client's settings.",
+                        "in": "query",
+                        "name": "AgreedToTermsAndConditions",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Callback function name used with JSONP. Value is a string consisting of the following characters: a-z,A-Z,0-9,_ (excluding comma). See <a href=\"https://developer.bazaarvoice.com/apis/conversations/tutorials/jsonp\">Cross Domain Requests Using JSONP</a> for more information.",
+                        "in": "query",
+                        "name": "Callback",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Arbitrary text that may be saved alongside content to indicate vehicle by which content was captured, e.g. \"post-purchase email\".",
+                        "in": "query",
+                        "name": "CampaignId",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Some examples of this parameter include the following. Each is followed by possible values. <ul><li>ContextDataValue_PurchaserRank - \"top\", \"top10\", \"top100\", \"top1000\"</li><li>ContextDataValue_Purchaser - \"yes\", \"no\"</li><li>ContextDataValue_Age - \"under21\", \"21to34\", \"35to44\", \"45to54\", \"55to64\", \"over65\"</li><li>ContextDataValue_Gender - \"male\", \"female\"</li></ul>",
+                        "in": "query",
+                        "name": "ContextDataValue_<Dimension-External-Id>",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Fingerprint of content author's device. See the <a href=\"https://developer.bazaarvoice.com/apis/conversations/tutorials/authenticity\">Authenticity Tutorial</a> for more information.",
+                        "in": "query",
+                        "name": "fp",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Email address where the submitter will receive the confirmation email. If you are configured to use hosted email authentication, this parameter is required. See the Authenticate User method for more information on hosted authentication.",
+                        "in": "query",
+                        "name": "HostedAuthentication_AuthenticationEmail",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "URL of the link contained in the user authentication email. This should point to a landing page where a web application exists to complete the user authentication process. The host for the URL must be one of the domains configured for the client. The link in the email will contain a user authentication token (authtoken) that is used to verify the submitter. If you are configured to use hosted email authentication, this parameter is required. See the hosted authentication tutorial for more information.",
+                        "in": "query",
+                        "name": "HostedAuthentication_CallbackUrl",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Locale to display Labels, Configuration, Product Attributes and Category Attributes in. The default value is the locale defined in the display associated with the API key. ",
+                        "in": "query",
+                        "name": "Locale",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Value is caption text for the photo URL with the same value of <n>.",
+                        "in": "query",
+                        "name": "PhotoCaption_<n>",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Value is a Bazaarvoice URL of a photo uploaded using the Data API, where <n> is a non-negative integer.",
+                        "in": "query",
+                        "name": "PhotoUrl_<n>",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Value is non-negative integer representing the product external ID of the <n>'th product recommendation (for Social Recommendations)",
+                        "in": "query",
+                        "name": "ProductRecommendationId_<n>",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Boolean indicating whether or not the user wants to be notified when his/her content is published.",
+                        "in": "query",
+                        "name": "SendEmailAlertWhenPublished",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Value of the encrypted user. This parameter demonstrates that a user has been authenticated. Note that the UserId parameter does not contain authentication information and should not be used for hosted authentication. See the <a href=\"https://developer.bazaarvoice.com/docs/read/conversations/profiles/authenticate\">Authenticate User</a> method for more information.",
+                        "in": "query",
+                        "name": "User",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "User's email address",
+                        "in": "query",
+                        "name": "UserEmail",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "User's external ID",
+                        "in": "query",
+                        "name": "UserId",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "User location text",
+                        "in": "query",
+                        "name": "UserLocation",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "User nickname display text",
+                        "in": "query",
+                        "name": "UserNickname",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Value is caption text for the video URL with the same value of <n>.",
+                        "in": "query",
+                        "name": "VideoCaption_<n>",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Value is valid YouTube or Bazaarvoice video-upload URL where <n> is a non-negative integer. ",
+                        "in": "query",
+                        "name": "VideoUrl_<n>",
                         "required": false,
                         "type": "string"
                     }
@@ -728,7 +1686,6 @@
                 "operationId": "displayProfile",
                 "parameters": [
                     {
-                        "collectionFormat": "multi",
                         "description": "Value of API Key",
                         "in": "query",
                         "name": "passkey",
@@ -736,11 +1693,104 @@
                         "type": "string"
                     },
                     {
-                        "collectionFormat": "multi",
-                        "description": "Version of API",
+                        "description": "API key is required to authenticate API user and check permission to access particular client's data.",
                         "in": "query",
-                        "name": "apiVersion",
+                        "name": "PassKey",
                         "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Response format (xml or json)",
+                        "in": "path",
+                        "name": "[FORMAT]",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Attributes to be included when returning content. For example, if includes are requested along with the &attributes=ModeratorCodes parameter, both the includes and the results will contain moderator codes. In order to filter by ModeratorCode, you must request the ModeratorCodes attribute parameter.",
+                        "in": "query",
+                        "name": "Attributes",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Callback function name used with JSONP. Value is a string consisting of the following characters: a-z,A-Z,0-9,_ (excluding comma). See <a href=\"https://developer.bazaarvoice.com/apis/conversations/tutorials/jsonp\">Cross Domain Requests Using JSONP</a> for more information.",
+                        "in": "query",
+                        "name": "Callback",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Filter criteria for primary content of the query. Multiple filter criteria are supported.",
+                        "in": "query",
+                        "name": "Filter",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Filter criteria for a included content or subject type. TYPE can be Reviews, Questions, Answers, or Comments. Multiple filter criteria are supported for each content type.",
+                        "in": "query",
+                        "name": "Filter_[TYPE]",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Content types written by the author to be included (e.g. Questions, Reviews, Answers, or Comments). Subject types like Products and Categories can also be specified.",
+                        "in": "query",
+                        "name": "Include",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Max number of records returned. An error is returned if the value passed exceeds 100.",
+                        "in": "query",
+                        "name": "Limit",
+                        "required": false,
+                        "type": "integer",
+                        "default": 10
+                    },
+                    {
+                        "description": "Limit option for a included content. TYPE can be Reviews, Questions, Answers or Comments. An error is returned if the value passed exceeds 20.  ",
+                        "in": "query",
+                        "name": "Limit_[TYPE]",
+                        "required": false,
+                        "type": "integer",
+                        "default": 10
+                    },
+                    {
+                        "description": "Locale to display Labels, Configuration, Product Attributes and Category Attributes in. The default value is the locale defined in the display associated with the API key.",
+                        "in": "query",
+                        "name": "Locale",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Index at which to return results. By default, indexing begins at 0 when you issue a query. Using Limit=100, Offset=0 returns results 0-99. When changing this to Offset=1, results 1-100 are returned.",
+                        "in": "query",
+                        "name": "Offset",
+                        "required": false,
+                        "type": "integer",
+                        "default": 0
+                    },
+                    {
+                        "description": "Sort criteria for primary content type of the query. Sort order is required (asc or desc). Multi-attribute sorting for each content/subject type is supported.",
+                        "in": "query",
+                        "name": "Sort",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Sort criteria for a included content. TYPE can be Reviews, Questions, Answers or Comments.",
+                        "in": "query",
+                        "name": "Sort_[TYPE]",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "The content types for which statistics should be calculated for the author. Available content types are: Reviews, Questions, Answers, Stories. Note: Statistics can also be calculated on includes.",
+                        "in": "query",
+                        "name": "Stats",
+                        "required": false,
                         "type": "string"
                     }
                 ],
@@ -785,24 +1835,31 @@
                 "operationId": "authenticateUser",
                 "parameters": [
                     {
-                        "description": "ID of pet that needs to be updated",
-                        "in": "path",
-                        "name": "petId",
+                        "description": "The API version, e.g. 5.4.",
+                        "in": "query",
+                        "name": "ApiVersion",
                         "required": true,
                         "type": "string"
                     },
                     {
-                        "description": "Updated name of the pet",
-                        "in": "formData",
-                        "name": "name",
-                        "required": false,
+                        "description": "Value of the authentication token that was received in a user's authentication email. See the hostedauthentication_callbackurl parameter for more information.",
+                        "in": "query",
+                        "name": "Authtoken",
+                        "required": true,
                         "type": "string"
                     },
                     {
-                        "description": "Updated status of the pet",
-                        "in": "formData",
-                        "name": "status",
-                        "required": false,
+                        "description": "Response format (xml or json)",
+                        "in": "path",
+                        "name": "[FORMAT]",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "API key is required to authenticate API user and check permission to access particular client's data.",
+                        "in": "query",
+                        "name": "PassKey",
+                        "required": true,
                         "type": "string"
                     }
                 ],
@@ -838,23 +1895,66 @@
                 "operationId": "uploadPhoto",
                 "parameters": [
                     {
-                        "description": "ID of pet that needs to be updated",
-                        "in": "path",
-                        "name": "petId",
+                        "description": "The API version, e.g. 5.4.",
+                        "in": "query",
+                        "name": "ApiVersion",
                         "required": true,
                         "type": "string"
                     },
                     {
-                        "description": "Updated name of the pet",
+                        "description": "Response format (xml or json)",
+                        "in": "path",
+                        "name": "Format",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "API key is required to authenticate API user and check permission to access particular client's data.",
+                        "in": "query",
+                        "name": "PassKey",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "The content type for which this media is being submitted. Valid values include: review, question, answer, story, review_comment and story_comment.",
+                        "in": "query",
+                        "name": "ContentType",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "A file representing the photo to be submitted. Note that the parameter name is case-sensitive and must be lowercase. Use either the photo or photoUrl parameter to define the photo to upload. An error is returned if both parameters are defined.",
                         "in": "formData",
-                        "name": "name",
+                        "name": "Photo",
+                        "required": true,
+                        "type": "file"
+                    },
+                    {
+                        "description": "URL of the photo to be uploaded. Use either the photo or photoUrl parameter to define the photo to upload. An error is returned if both parameters are defined. HTTP and HTTPS are the only protocols supported for the photoUrl parameter.",
+                        "in": "query",
+                        "name": "PhotoURL",
+                        "required": true,
+                        "type": "string"
+                    },
+
+                    {
+                        "description": "Locale to display Labels, Configuration, Product Attributes and Category Attributes in. The default value is the locale defined in the display associated with the API key.",
+                        "in": "query",
+                        "name": "Locale",
                         "required": false,
                         "type": "string"
                     },
                     {
-                        "description": "Updated status of the pet",
+                        "description": "Value of the encrypted user. This parameter demonstrates that a user has been authenticated. Note that the UserId parameter does not contain authentication information and should not be used for hosted authentication. See the Authenticate User method for more information.",
                         "in": "formData",
-                        "name": "status",
+                        "name": "User",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "User's external ID",
+                        "in": "query",
+                        "name": "UserId",
                         "required": false,
                         "type": "string"
                     }
@@ -891,23 +1991,58 @@
                 "operationId": "uploadVideo",
                 "parameters": [
                     {
-                        "description": "ID of pet that needs to be updated",
-                        "in": "path",
-                        "name": "petId",
+                        "description": "The API version, e.g. 5.4.",
+                        "in": "query",
+                        "name": "ApiVersion",
                         "required": true,
                         "type": "string"
                     },
                     {
-                        "description": "Updated name of the pet",
+                        "description": "Response format (xml or json)",
+                        "in": "path",
+                        "name": "Format",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "API key is required to authenticate API user and check permission to access particular client's data.",
+                        "in": "query",
+                        "name": "PassKey",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "The content type for which this media is being submitted. Valid values include: review, question, answer, story, review_comment and story_comment.",
+                        "in": "query",
+                        "name": "ContentType",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "A file representing the video to be submitted.",
                         "in": "formData",
-                        "name": "name",
+                        "name": "Video",
+                        "required": true,
+                        "type": "file"
+                    },
+                    {
+                        "description": "Locale to display Labels, Configuration, Product Attributes and Category Attributes in. The default value is the locale defined in the display associated with the API key.",
+                        "in": "query",
+                        "name": "Locale",
                         "required": false,
                         "type": "string"
                     },
                     {
-                        "description": "Updated status of the pet",
+                        "description": "Value of the encrypted user. This parameter demonstrates that a user has been authenticated. Note that the UserId parameter does not contain authentication information and should not be used for hosted authentication. See the Authenticate User method for more information.",
                         "in": "formData",
-                        "name": "status",
+                        "name": "User",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "User's external ID",
+                        "in": "query",
+                        "name": "UserId",
                         "required": false,
                         "type": "string"
                     }
@@ -944,23 +2079,125 @@
                 "operationId": "displayProucts",
                 "parameters": [
                     {
-                        "description": "ID of pet that needs to be updated",
-                        "in": "path",
-                        "name": "petId",
+                        "description": "The API version, e.g. 5.4.",
+                        "in": "query",
+                        "name": "ApiVersion",
                         "required": true,
                         "type": "string"
                     },
                     {
-                        "description": "Updated name of the pet",
-                        "in": "formData",
-                        "name": "name",
+                        "description": "Response format (xml or json)",
+                        "in": "path",
+                        "name": "Format",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "API key is required to authenticate API user and check permission to access particular client's data.",
+                        "in": "query",
+                        "name": "PassKey",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Callback function name used with JSONP. Value is a string consisting of the following characters: a-z,A-Z,0-9,_ (excluding comma). See Cross Domain Requests Using JSONP for more information.",
+                        "in": "query",
+                        "name": "Callback",
                         "required": false,
                         "type": "string"
                     },
                     {
-                        "description": "Updated status of the pet",
-                        "in": "formData",
-                        "name": "status",
+                        "description": "Boolean flag indicating whether to exclude content (reviews, questions, etc.) from other products in the same family as the requested product. This setting only affects any nested content that is returned. For example, '&filter=productid:eq:1101&include=reviews&excludeFamily=true' limits returned review content to just that of product 1101 and not any of the products in the same family. If a value is not defined, content on all products in the family is returned.",
+                        "in": "query",
+                        "name": "ExcludeFamily",
+                        "required": false,
+                        "type": "string",
+                        "default": "false"
+                    },
+                    {
+                        "description": "Filter criteria for primary content of the query. Multiple filter criteria are supported.",
+                        "in": "query",
+                        "name": "Filter",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Filtering option for included nested content. TYPE can be any related content, i.e., Reviews, Questions, Answers, Stories, Comments, Authors, Categories.",
+                        "in": "query",
+                        "name": "Filter_[TYPE]",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Related subjects to be included (e.g. Products, Categories, Authors, Reviews, Questions, or Stories).",
+                        "in": "query",
+                        "name": "Include",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Max number of records returned. An error is returned if the value passed exceeds 100.",
+                        "in": "query",
+                        "name": "Limit",
+                        "required": false,
+                        "type": "integer",
+                        "default": "10"
+                    },
+                    {
+                        "description": "Limit option for the nested content type returned. TYPE can be any related content i.e.Reviews, Questions, Answers, Stories, Comments, Authors, Categories. An error is returned if the value passed exceeds 20.",
+                        "in": "query",
+                        "name": "Limit_[TYPE]",
+                        "required": false,
+                        "type": "string",
+                        "default": "10"
+                    },
+                    {
+                        "description": "Locale to display Labels, Configuration, Product Attributes and Category Attributes in. The default value is the locale defined in the display associated with the API key.",
+                        "in": "query",
+                        "name": "Locale",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Index at which to return results. By default, indexing begins at 0 when you issue a query. Using Limit=100, Offset=0 returns results 0-99. When changing this to Offset=1, results 1-100 are returned.",
+                        "in": "query",
+                        "name": "Offset",
+                        "required": false,
+                        "type": "string",
+                        "default": "0"
+                    },
+                    {
+                        "description": "Full-text search string used to find UGC. For more information about what fields are searched by default, see the Conversations API page. Note: This invalidates sort options due to the fact that search takes precedence in returned data.",
+                        "in": "query",
+                        "name": "Search",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Searching option for included content followed by full-text search string. See the Conversations API page for examples of searching for included data. Note: This invalidates sort options due to the fact that search takes precedence in returned data.",
+                        "in": "query",
+                        "name": "Search_[TYPE]",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Sort criteria for primary content type of the query. Sort order is required (asc or desc). Multi-attribute sorting for each content/subject type is supported.",
+                        "in": "query",
+                        "name": "Sort",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Sorting option for nested content. Sort order is required (asc or desc). TYPE can be any related content, i.e., Reviews, Questions, Answers, Stories, Comments, Authors, Categories.",
+                        "in": "query",
+                        "name": "Sort_[TYPE]",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "The content types for which statistics should be calculated for the product. Available content types are: Reviews, Questions, Answers, Stories. Note: Statistics can also be calculated on includes.",
+                        "in": "query",
+                        "name": "Stats",
                         "required": false,
                         "type": "string"
                     }
@@ -997,23 +2234,101 @@
                 "operationId": "displayCategories",
                 "parameters": [
                     {
-                        "description": "ID of pet that needs to be updated",
-                        "in": "path",
-                        "name": "petId",
+                        "description": "The API version, e.g. 5.4.",
+                        "in": "query",
+                        "name": "ApiVersion",
                         "required": true,
                         "type": "string"
                     },
                     {
-                        "description": "Updated name of the pet",
-                        "in": "formData",
-                        "name": "name",
+                        "description": "Response format (xml or json)",
+                        "in": "path",
+                        "name": "Format",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "API key is required to authenticate API user and check permission to access particular client's data.",
+                        "in": "query",
+                        "name": "PassKey",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Callback function name used with JSONP. Value is a string consisting of the following characters: a-z,A-Z,0-9,_ (excluding comma). See Cross Domain Requests Using JSONP for more information.",
+                        "in": "query",
+                        "name": "Callback",
                         "required": false,
                         "type": "string"
                     },
                     {
-                        "description": "Updated status of the pet",
-                        "in": "formData",
-                        "name": "status",
+                        "description": "Filter criteria for primary content of the query. Multiple filter criteria are supported.",
+                        "in": "query",
+                        "name": "Filter",
+                        "required": false,
+                        "type": "string",
+                        "collectionFormat": "multi"
+                    },
+                    {
+                        "description": "This parameter is used to specify related data to be included, e.g., Products, Questions, Answers and Stories.",
+                        "in": "query",
+                        "name": "Include",
+                        "required": false,
+                        "type": "string"                    },
+                    {
+                        "description": "Max number of records returned. An error is returned if the value passed exceeds 100.",
+                        "in": "query",
+                        "name": "Limit",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Limit option for the nested content type returned. TYPE can be any nested content. e.g. Answers for Questions. An error is returned if the value passed exceeds 20.",
+                        "in": "query",
+                        "name": "Limit_TYPE",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "description": "Locale to display Labels, Configuration, Product Attributes and Category Attributes in. The default value is the locale defined in the display associated with the API key.",
+                        "in": "query",
+                        "name": "Locale",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Index at which to return results. By default, indexing begins at 0 when you issue a query. Using Limit=100, Offset=0 returns results 0-99. When changing this to Offset=1, results 1-100 are returned.",
+                        "in": "query",
+                        "name": "Offset",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Full-text search string used to find UGC. For more information about what fields are searched by default, see the Conversations API page. Note: This invalidates sort options due to the fact that search takes precedence in returned data.",
+                        "in": "query",
+                        "name": "Search",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Searching option for included content followed by full-text search string. See the Conversations API page for examples of searching for included data. Note: This invalidates sort options due to the fact that search takes precedence in returned data.",
+                        "in": "query",
+                        "name": "Search_[TYPE]",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Sort criteria for Categories. Multi-attribute sorting is supported.",
+                        "in": "query",
+                        "name": "Sort",
+                        "required": false,
+                        "type": "string",
+                        "default": "id"
+                    },
+                    {
+                        "description": "The content types for which statistics can be calculated for the category. Available content types are: Stories, Questions, Answers. Note: Statistics can also be calculated on includes.",
+                        "in": "query",
+                        "name": "Stats",
                         "required": false,
                         "type": "string"
                     }
@@ -1050,23 +2365,37 @@
                 "operationId": "displayStats",
                 "parameters": [
                     {
-                        "description": "ID of pet that needs to be updated",
-                        "in": "path",
-                        "name": "petId",
+                        "description": "API key is required to authenticate API user and check permission to access particular client's data.   ",
+                        "in": "query",
+                        "name": "PassKey",
                         "required": true,
                         "type": "string"
                     },
                     {
-                        "description": "Updated name of the pet",
-                        "in": "formData",
-                        "name": "name",
-                        "required": false,
+                        "description": "The API version, e.g. 5.4.",
+                        "in": "query",
+                        "name": "ApiVersion",
+                        "required": true,
                         "type": "string"
                     },
                     {
-                        "description": "Updated status of the pet",
-                        "in": "formData",
-                        "name": "status",
+                        "description": "Filter criteria for content of the query. Must be Product IDs.",
+                        "in": "query",
+                        "name": "Filter",
+                        "required": true,
+                        "type": "string"
+                    },
+                   {
+                        "description": "The content type for which statistics should be included. Currently available types: Reviews",
+                        "in": "query",
+                        "name": "Stats",
+                        "required": true,
+                        "type": "string"
+                    },
+                   {
+                        "description": "Callback function name used with JSONP. Value is a string consisting of the following characters: a-z,A-Z,0-9,_ (excluding comma).",
+                        "in": "query",
+                        "name": "Callback",
                         "required": false,
                         "type": "string"
                     }
