@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Swagger UI</title>
   <link rel="icon" type="image/png" href="images/favicon-32x32.png" sizes="32x32" />
@@ -79,6 +80,7 @@
           console.log.apply(console, arguments);
         }
       }
+
   });
   </script>
 </head>
@@ -86,6 +88,9 @@
 <body class="swagger-section">
   
 <!--BV branded header-->
+
+
+
 <div id='header' class="bv-wrapper">
   <div class="swagger-ui-wrap">
     <a id="logo" href="https://developer.bazaarvoice.com/apis/conversations/">
@@ -96,6 +101,11 @@
       <div class='input'><input placeholder="http://example.com/api" id="input_baseUrl" name="baseUrl" type="text"/></div>
       <div class='input'><input placeholder="api_key" id="input_apiKey" name="apiKey" type="text"/></div>
       <div class='input'><a id="explore" href="#">Explore</a></div>
+
+      <div class="createJSONContainer" >
+        <div class='input'><input placeholder="Your Api Key" id="your_input_apiKey" name="yourAPIKey" type="text"/></div>
+        <div class='input'><a id="create" href="#">Create JSON</a></div>
+      </div> 
     </form>
   </div>
 </div>

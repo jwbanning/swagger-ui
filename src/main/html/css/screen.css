@@ -1145,6 +1145,47 @@
   overflow: hidden;
   position: relative;
 }
+.createJSONContainer {
+  width: 100%;
+}
+.createJSONContainer #your_input_apiKey {
+  float: left;
+}
+.createJSONContainer #create {
+  float: left;
+}
+/* apiKey*/
+.apiKey {
+  margin: 20px auto;
+}
+.apiKey label {
+  float: left;
+}
+.apiKey input {
+  float: left;
+  margin: 5px 0 0 20px;
+}
+.apiKey .button {
+  display: block;
+  clear: none;
+  float: left;
+  margin: 0 10px 0 20px;
+}
+.apiKey .button a {
+  display: block;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 0px 8px;
+  font-size: 0.9em;
+  color: white;
+  background-color: #00ab8e;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -o-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -khtml-border-radius: 4px;
+  border-radius: 4px;
+}
 .swagger-section .access {
   float: right;
 }
@@ -1213,7 +1254,7 @@
   border-bottom-right-radius: 0;
   -moz-border-radius: 0.5em 0.5em 0 0;
   background: #003d4c;
-  height: 30px;
+  height: 60px;
   overflow: hidden;
   position: relative;
 }
@@ -1251,7 +1292,8 @@
 .swagger-section #header form#api_selector .input input#input_baseUrl {
   width: 400px;
 }
-.swagger-section #header form#api_selector .input a#explore {
+.swagger-section #header form#api_selector .input a#explore,
+.swagger-section #header form#api_selector .input a#create {
   display: block;
   text-decoration: none;
   font-weight: bold;
