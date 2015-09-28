@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Swagger UI</title>
+  <link rel="icon" type="image/png" href="images/favicon-32x32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="images/favicon-16x16.png" sizes="16x16" />
+  <link href='css/typography.css' media='screen' rel='stylesheet' type='text/css'/>
+  <link href='css/reset.css' media='screen' rel='stylesheet' type='text/css'/>
+  <link href='css/screen.css' media='screen' rel='stylesheet' type='text/css'/>
+  <link href='css/reset.css' media='print' rel='stylesheet' type='text/css'/>
+  <link href='css/print.css' media='print' rel='stylesheet' type='text/css'/>
+  <script src='lib/jquery-1.8.0.min.js' type='text/javascript'></script>
+  <script src='lib/jquery.slideto.min.js' type='text/javascript'></script>
+  <script src='lib/jquery.wiggle.min.js' type='text/javascript'></script>
+  <script src='lib/jquery.ba-bbq.min.js' type='text/javascript'></script>
+  <script src='lib/handlebars-2.0.0.js' type='text/javascript'></script>
+  <script src='lib/underscore-min.js' type='text/javascript'></script>
+  <script src='lib/backbone-min.js' type='text/javascript'></script>
+  <script src='swagger-ui.js' type='text/javascript'></script>
+  <script src='lib/highlight.7.3.pack.js' type='text/javascript'></script>
+  <script src='lib/marked.js' type='text/javascript'></script>
+
+    <script type="text/javascript">
+    $(function () {
+        $( "#API_key_submit" ).click(function() {
+            console.log( "Handler for .click() called." );
+            // get the value from the input
+            var apiKey = $("#API_key_input").val();
+            if (typeof apiKey != 'undefined'){  //ToDo REGEX HERE
+                console.log( "apiKey Has Value " + apiKey);
+                var clientName = getClientName(apiKey);
+               
+            }
+            else{
+                console.log("API KEY VALUE IS NEEDED");
+            }
+        });
+
+        function getClientName(apiKey){
+            var clientName = "";
+            // make an request to get the key.
+            var clientLookUpURL = "http://api.bazaarvoice.com/clientInfo/1.0/clientLookup/ik43j1r1xnamanp2xn48pg7jf?passKey=g43rgdjk39bbr535p3h5wc35"; 
+                $.getJSON(clientLookUpURL, {
+                })
+                .done(function( data ) {
+                  console.log(data);
+                  getClientCluser(data);
+
+
+                });
+        }
+        function getClientCluser(data){
+            //https://rosetta.prod.us-east-1.nexus.bazaarvoice.com/search/1/bundle?format=csv&fields=platform&delim=+&name=testcustomer-concierge-integra
+debugger;
+            var clientClusterLookUpURL = "https://rosetta.prod.us-east-1.nexus.bazaarvoice.com/search/1/bundle?format=json&fields=platform&delim=+&name=" + data.clientName;
+            
+              $.getJSON(clientClusterLookUpURL, {
+              })
+              .done(function( data ) {
+                console.log(data);
+              });
+        }
+    });
+    </script>
+
+  
+</head>
+
+<body class="swagger-section">
+  
+<!--BV branded header-->
+<div id='header' class="bv-wrapper">
+  <div class="swagger-ui-wrap">
+    <a id="logo" href="https://developer.bazaarvoice.com/apis/conversations/">
+      <div class="bv-logo"></div>
+      <span class="conv">Conversations</span>
+    </a>
+    <form id='api_selector'>
+      <div class='input'><input placeholder="http://example.com/api" id="input_baseUrl" name="baseUrl" type="text"/></div>
+      <div class='input'><input placeholder="api_key" id="input_apiKey" name="apiKey" type="text"/></div>
+      <div class='input'><a id="explore" href="#">Explore</a></div>
+    </form>
+  </div>
+</div>
+<div id="swagger-ui-container" class="swagger-ui-wrap apiKey">
+    <label class="" for="API_key_input">Please enter API Key:</label>
+    <input type="text" id='API_key_input'/>
+    <div class="button"><a id="API_key_submit" href="#">Submit</a></div>
+</div>
+</body>
+</html>

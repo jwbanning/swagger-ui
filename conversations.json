@@ -197,7 +197,17 @@
                         "in": "query",
                         "name": "ApiVersion",
                         "required": true,
-                        "type": "string"
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "multi",
+                        "default": "5.4",
+                        "enum": [
+                            "5.4",
+                            "5.3",
+                            "5.2"
+                        ]
                     },
                     {
                         "description": "API key is required to authenticate API user and check permission to access particular client's data.",
@@ -254,8 +264,7 @@
                         "in": "query",
                         "name": "Include",
                         "required": false,
-                        "type": "string",
-                        "default": "Returns only Stories if not specified"
+                        "type": "string"
                     },
                     {
                         "description": "Max number of records returned. An error is returned if the value passed exceeds 100.",
@@ -270,8 +279,7 @@
                         "in": "query",
                         "name": "Limit_[TYPE]",
                         "required": false,
-                        "type": "integer",
-                        "default": 10
+                        "type": "integer"
                     },
                     {
                         "description": "Locale to display Labels, Configuration, Product Attributes and Category Attributes in. The default value is the locale defined in the display associated with the API key.",
@@ -307,8 +315,7 @@
                         "in": "query",
                         "name": "Sort",
                         "required": false,
-                        "type": "string",
-                        "default": "Sorted by SubmissionTime if not specified"
+                        "type": "string"
                     },
                     {
                         "description": "Sorting option for nested content. Sort order is required (asc or desc). TYPE can be any nested content. i.e. Comments for Reviews.",
