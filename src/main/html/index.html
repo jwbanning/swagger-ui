@@ -27,7 +27,8 @@
       if (url && url.length > 1) {
         url = decodeURIComponent(url[1]);
       } else {
-        url = "https://s3-us-west-2.amazonaws.com/api-swagger/conversations.json";
+        // url = "https://s3-us-west-2.amazonaws.com/api-swagger/conversations.json";
+        url = "http://apitest.com:8080/resources/conversations.json";
       }
       window.swaggerUi = new SwaggerUi({
         url: url,

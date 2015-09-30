@@ -26,41 +26,139 @@
         $( "#API_key_submit" ).click(function() {
             console.log( "Handler for .click() called." );
             // get the value from the input
-            var apiKey = $("#API_key_input").val();
+            var apiKey = $("#API_key_input").val();  
             if (typeof apiKey != 'undefined'){  //ToDo REGEX HERE
                 console.log( "apiKey Has Value " + apiKey);
-                var clientName = getClientName(apiKey);
-               
+                // var clientName = getClientName(apiKey);
+                var displaycode = getDCHubble(apiKey);
             }
             else{
                 console.log("API KEY VALUE IS NEEDED");
             }
         });
+        function getDCHubble(apiKey){
+          var displayCode = '';
+          var URL = "http://hubble.prod.us-east-1.nexus.bazaarvoice.com/1/polloi/bazaar/search?g=concsrc:cialab&t=apikey&coordinate=apikey%2F" + apiKey;
+            
+            $.getJSON(URL, {
+              })
+              .done(function( data ) {
+                // console.log(data);
+                if (data.hits.hits[0]._source.displayCode){
+                  displayCode = data.hits.hits[0]._source.displayCode;
+                  //OK now see what features are available.
+                  //https://rosetta.prod.us-east-1.nexus.bazaarvoice.com/package/1/display/3545relevancyapi
+                  getApplicationCodes(displayCode);
+                }
+                else{
+                  console.log('No displayCode found')
+                }
 
+              });
+        }
+        function getApplicationCodes(displayCode){
+            var features = []; //empty array            
+            var featuresURL = "https://rosetta.prod.us-east-1.nexus.bazaarvoice.com/package/1/display/" + displayCode; 
+            $.getJSON(featuresURL, {
+            })
+            .done(function( data ) {
+              for (i=0; i < data.applicationCodes.length; i++){
+                features.push(data.applicationCodes[i]);
+              }                  
+              getSwaggerSpec(displayCode, features);
+
+            });
+        }
+        function getConfigs(data, displayCode, features){
+          //kill the stories endpoints for ALL
+          delete data.paths['/stories.json'];
+          delete data.paths['/submitstory.json'];
+          //END kill the stories endpoints for ALL
+  
+          //get the full swagger specifcation and kill the appropriate sections.
+          if(features.indexOf("PRR") == -1){
+            console.log('Not present > PRR')
+            //kill the  1. /reviews.json and 2. /submitreview.json PATHS
+            delete data.paths['/reviews.json'];
+            delete data.paths['/submitreview.json']; 
+          }
+          if (features.indexOf("CP") == -1){
+            console.log('Not present > CP')
+            //kill the  1. GET /authors.json and 2. POST /authenticateuser.json
+            delete data.paths['/authors.json'];
+            delete data.paths['/authenticateuser.json']; 
+          }
+          if(features.indexOf("QA") == -1){
+            console.log('Not present > QA')
+            //kill the  1. GET /questions.json and 2. POST /submitquestion.json and the 3. GET /relatedquestions.json
+            //kill the 1. GET /answers.json and 2. POST /submitanswer.json 
+            delete data.paths['/questions.json'];
+            delete data.paths['/submitquestion.json']; 
+            delete data.paths['/relatedquestions.json'];
+            delete data.paths['/answers.json']; 
+            delete data.paths['/submitanswer.json'];
+          }
+          //use the newly edited swagger spec to drive the UI
+
+
+        }
+        function getSwaggerSpec(displayCode, features){
+          //obtain the complete file
+          debugger;
+          var swaggerSpecURL = "https://s3-us-west-2.amazonaws.com/api-swagger/conversations.json";
+          $.getJSON(swaggerSpecURL, {
+          })
+          .done(function( data ) {
+            console.log(data);
+            getConfigs(data, displayCode, features);
+          });
+        }
+
+// BELOW HERE NO FUNCTIONS ARE USED
         function getClientName(apiKey){
             var clientName = "";
             // make an request to get the key.
-            var clientLookUpURL = "http://api.bazaarvoice.com/clientInfo/1.0/clientLookup/ik43j1r1xnamanp2xn48pg7jf?passKey=g43rgdjk39bbr535p3h5wc35"; 
+            var clientLookUpURL = "http://api.bazaarvoice.com/clientInfo/1.0/clientLookup/ik43j1r1xnamanp2xn48pg7jf?passKey=" + apiKey; 
                 $.getJSON(clientLookUpURL, {
                 })
                 .done(function( data ) {
                   console.log(data);
-                  getClientCluser(data);
-
-
+                  getClientCluser(data, apiKey);
                 });
         }
-        function getClientCluser(data){
-            //https://rosetta.prod.us-east-1.nexus.bazaarvoice.com/search/1/bundle?format=csv&fields=platform&delim=+&name=testcustomer-concierge-integra
-debugger;
-            var clientClusterLookUpURL = "https://rosetta.prod.us-east-1.nexus.bazaarvoice.com/search/1/bundle?format=csv&fields=platform&delim=+&name=" + data.clientName;
+        function getClientCluser(data, apiKey){
+            var clientClusterLookUpURL = "https://rosetta.prod.us-east-1.nexus.bazaarvoice.com/search/1/bundle?format=json&fields=platform&delim=+&name=" + data.clientName;
             
               $.getJSON(clientClusterLookUpURL, {
               })
               .done(function( data ) {
                 console.log(data);
+                getDisplayCode(data[0].cluster, apiKey);
               });
         }
+        function getDisplayCode(clusterName, apiKey){
+  //TODO remove line below
+            apiKey = "21htcv13z2l98yr0t4t5mb218";
+  //TODO remove line above
+            var displayCodeLookUpURL = "https://manager-"+clusterName+".bazaarvoice.com/bvmanager/toolbox/getAPIKeyInfo?apiKeyString=" + apiKey;
+              $.getJSON(displayCodeLookUpURL, {
+              })
+              .done(function( data ) {
+                console.log('displayCode: ' + data.displayCode);                
+                getConfig(data.displayCode);
+              });
+        }
+        function getConfig(displayCode){
+            debugger;
+            var displayCodeLookUpURL = "https://rosetta.prod.us-east-1.nexus.bazaarvoice.com/package/1/bundle/" + displayCode;
+              $.getJSON(displayCodeLookUpURL, {
+              })
+              .done(function( data ) {
+                console.log('config: ');
+              });
+        }
+
+        
     });
     </script>
 
@@ -87,6 +185,9 @@ debugger;
     <label class="" for="API_key_input">Please enter API Key:</label>
     <input type="text" id='API_key_input'/>
     <div class="button"><a id="API_key_submit" href="#">Submit</a></div>
+</div>
+<div>
+  <h3>2hox7vlap3ifsswinusthf0k5</h3>
 </div>
 </body>
 </html>
