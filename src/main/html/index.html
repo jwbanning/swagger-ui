@@ -128,59 +128,38 @@
           delete swaggerSpecFull.paths['/submitanswer.json'];
         }
         //use the newly edited swagger spec to drive the UI
-
-        debugger;
-        alert('done');
-        
+        renderSwagger();
       }
-      function getSwaggerSpec(displayCode, features){
-        //obtain the complete file
-        var swaggerSpecURL = "https://s3-us-west-2.amazonaws.com/api-swagger/conversations.json";
-        $.getJSON(swaggerSpecURL, {
-        })
-        .done(function( data ) {
-//TO DO REMOVE CONSOLE LOG
-          console.log(data);
-          getConfigs(data, displayCode, features);
-          
-          //call the function to render the swagger.
-          
-        });
-      }
-      function getSwaggerSpecNew(){
-        //obtain the complete file
-        var swaggerSpecURL = "https://s3-us-west-2.amazonaws.com/api-swagger/conversations.json";
-        $.getJSON(swaggerSpecURL, {
-        })
-        .done(function( data ) {
-          return data;
-        });
-      }
-    
-      window.swaggerUi = new SwaggerUi({
-        url: url,
-        dom_id: "swagger-ui-container",
-        supportedSubmitMethods: ['get', 'post', 'put', 'delete', 'patch'],
-        onComplete: function(swaggerApi, swaggerUi){
-          if(typeof initOAuth == "function") {
-            /*
-            initOAuth({
-              clientId: "your-client-id",
-              realm: "your-realms",
-              appName: "your-app-name"
+      function renderSwagger(){
+        alert('render the page now');
+        window.swaggerUi = new SwaggerUi({
+          url: url,
+          spec: swaggerSpecFull,
+          dom_id: "swagger-ui-container",
+          supportedSubmitMethods: ['get', 'post', 'put', 'delete', 'patch'],
+          onComplete: function(swaggerApi, swaggerUi){
+            if(typeof initOAuth == "function") {
+              /*
+              initOAuth({
+                clientId: "your-client-id",
+                realm: "your-realms",
+                appName: "your-app-name"
+              });
+              */
+            }
+            $('pre code').each(function(i, e) {
+              hljs.highlightBlock(e)
             });
-            */
-          }
-          $('pre code').each(function(i, e) {
-            hljs.highlightBlock(e)
-          });
-        },
-        onFailure: function(data) {
-          log("Unable to Load SwaggerUI");
-        },
-        docExpansion: "none",
-        sorter : "alpha"
-      });
+          },
+          onFailure: function(data) {
+            log("Unable to Load SwaggerUI");
+          },
+          docExpansion: "none",
+          sorter : "alpha"
+        });
+
+        window.swaggerUi.load();
+      }
 
       function addApiKeyAuthorization() {
         var key = encodeURIComponent($('#input_apiKey')[0].value);
@@ -200,8 +179,7 @@
         $('#input_apiKey').val(apiKey);
         addApiKeyAuthorization();
       */
-      window.swaggerUi.load();
-
+    
       function log() {
         if ('console' in window) {
           console.log.apply(console, arguments);
