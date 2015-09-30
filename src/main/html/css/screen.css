@@ -1293,7 +1293,7 @@
   width: 400px;
 }
 .swagger-section #header form#api_selector .input a#explore,
-.swagger-section #header form#api_selector .input a#create {
+.swagger-section #header form#api_selector .input a#API_key_submit {
   display: block;
   text-decoration: none;
   font-weight: bold;

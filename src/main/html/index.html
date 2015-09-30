@@ -22,14 +22,141 @@
   <script src='lib/marked.js' type='text/javascript'></script>
 
   <script type="text/javascript">
+    var swaggerSpecFull = {};  //empty object
+      
     $(function () {
+      
       var url = window.location.search.match(/url=([^&]+)/);
       if (url && url.length > 1) {
         url = decodeURIComponent(url[1]);
       } else {
-        // url = "https://s3-us-west-2.amazonaws.com/api-swagger/conversations.json";
-        url = "http://apitest.com:8080/resources/conversations.json";
+        url = "https://s3-us-west-2.amazonaws.com/api-swagger/conversations.json";
       }
+
+      //handle the click event.
+      $( "#API_key_submit" ).click(function() {
+        //go get the full specification
+
+          console.log( "Handler for .click() called." );
+          if (typeof apiKey != 'undefined'){  //ToDo REGEX HERE
+              console.log( "apiKey Has Value " + apiKey);
+              var displaycode = getDCHubble(apiKey);
+          }
+          else{
+              console.log("API KEY VALUE IS NEEDED");
+          }
+          
+          var swaggerSpecURL = "https://s3-us-west-2.amazonaws.com/api-swagger/conversations.json";
+          $.getJSON(swaggerSpecURL, {
+          })
+          .done(function( data ) {
+            // get the value from the input
+            var apiKey = $("#your_input_apiKey").val();
+            getDCHubble(data, apiKey);
+          });
+
+
+      });
+
+      function getDCHubble(data, apiKey){
+        debugger;
+        swaggerSpecFull = data;  //set the global var.
+
+        var displayCode = '';
+        var URL = "http://hubble.prod.us-east-1.nexus.bazaarvoice.com/1/polloi/bazaar/search?g=concsrc:cialab&t=apikey&coordinate=apikey%2F" + apiKey;
+          
+          $.getJSON(URL, {
+            })
+            .done(function( data ) {
+              // console.log(data);
+              if (data.hits.hits[0]._source.displayCode){
+                displayCode = data.hits.hits[0]._source.displayCode;
+                //OK now see what features are available.
+                //https://rosetta.prod.us-east-1.nexus.bazaarvoice.com/package/1/display/3545relevancyapi
+                getApplicationCodes(displayCode);
+              }
+              else{
+                console.log('No displayCode found')
+              }
+
+            });
+      }
+      function getApplicationCodes(displayCode){
+          debugger;
+          var features = []; //empty array            
+          var featuresURL = "https://rosetta.prod.us-east-1.nexus.bazaarvoice.com/package/1/display/" + displayCode; 
+          $.getJSON(featuresURL, {
+          })
+          .done(function( data ) {
+            for (i=0; i < data.applicationCodes.length; i++){
+              features.push(data.applicationCodes[i]);
+            }                  
+            getConfigs(displayCode, features);
+
+          });
+      }
+      function getConfigs(displayCode, features){
+        debugger;
+
+        swaggerSpecFull
+        //kill the stories endpoints for ALL
+        delete swaggerSpecFull.paths['/stories.json'];
+        delete swaggerSpecFull.paths['/submitstory.json'];
+        //END kill the stories endpoints for ALL
+
+        //get the full swagger specifcation and kill the appropriate sections.
+        if(features.indexOf("PRR") == -1){
+          console.log('Not present > PRR')
+          //kill the  1. /reviews.json and 2. /submitreview.json PATHS
+          delete swaggerSpecFull.paths['/reviews.json'];
+          delete swaggerSpecFull.paths['/submitreview.json']; 
+        }
+        if (features.indexOf("CP") == -1){
+          console.log('Not present > CP')
+          //kill the  1. GET /authors.json and 2. POST /authenticateuser.json
+          delete swaggerSpecFull.paths['/authors.json'];
+          delete swaggerSpecFull.paths['/authenticateuser.json']; 
+        }
+        if(features.indexOf("QA") == -1){
+          console.log('Not present > QA')
+          //kill the  1. GET /questions.json and 2. POST /submitquestion.json and the 3. GET /relatedquestions.json
+          //kill the 1. GET /answers.json and 2. POST /submitanswer.json 
+          delete swaggerSpecFull.paths['/questions.json'];
+          delete swaggerSpecFull.paths['/submitquestion.json']; 
+          delete swaggerSpecFull.paths['/relatedquestions.json'];
+          delete swaggerSpecFull.paths['/answers.json']; 
+          delete swaggerSpecFull.paths['/submitanswer.json'];
+        }
+        //use the newly edited swagger spec to drive the UI
+
+        debugger;
+        alert('done');
+        
+      }
+      function getSwaggerSpec(displayCode, features){
+        //obtain the complete file
+        var swaggerSpecURL = "https://s3-us-west-2.amazonaws.com/api-swagger/conversations.json";
+        $.getJSON(swaggerSpecURL, {
+        })
+        .done(function( data ) {
+//TO DO REMOVE CONSOLE LOG
+          console.log(data);
+          getConfigs(data, displayCode, features);
+          
+          //call the function to render the swagger.
+          
+        });
+      }
+      function getSwaggerSpecNew(){
+        //obtain the complete file
+        var swaggerSpecURL = "https://s3-us-west-2.amazonaws.com/api-swagger/conversations.json";
+        $.getJSON(swaggerSpecURL, {
+        })
+        .done(function( data ) {
+          return data;
+        });
+      }
+    
       window.swaggerUi = new SwaggerUi({
         url: url,
         dom_id: "swagger-ui-container",
@@ -73,7 +200,6 @@
         $('#input_apiKey').val(apiKey);
         addApiKeyAuthorization();
       */
-
       window.swaggerUi.load();
 
       function log() {
@@ -105,7 +231,10 @@
 
       <div class="createJSONContainer" >
         <div class='input'><input placeholder="Your Api Key" id="your_input_apiKey" name="yourAPIKey" type="text"/></div>
-        <div class='input'><a id="create" href="#">Create JSON</a></div>
+        <div class='input'><a id="API_key_submit" href="#">Get Configuration</a></div>
+        <div>
+          <h3>2hox7vlap3ifsswinusthf0k5</h3>
+        </div>
       </div> 
     </form>
   </div>
