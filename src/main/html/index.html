@@ -33,33 +33,30 @@
         url = "https://s3-us-west-2.amazonaws.com/api-swagger/conversations.json";
       }
 
+
+
       //handle the click event.
       $( "#API_key_submit" ).click(function() {
-        //go get the full specification
-
-          console.log( "Handler for .click() called." );
+          // get the value from the input
+          var apiKey = $("#your_input_apiKey").val();
+          
           if (typeof apiKey != 'undefined'){  //ToDo REGEX HERE
               console.log( "apiKey Has Value " + apiKey);
-              var displaycode = getDCHubble(apiKey);
+              //go get the full specification
+              var swaggerSpecURL = "https://s3-us-west-2.amazonaws.com/api-swagger/conversations.json";
+              $.getJSON(swaggerSpecURL, {
+              })
+              .done(function( data ) {
+                getDisplyCode(data, apiKey);
+              });
           }
           else{
               console.log("API KEY VALUE IS NEEDED");
           }
-          
-          var swaggerSpecURL = "https://s3-us-west-2.amazonaws.com/api-swagger/conversations.json";
-          $.getJSON(swaggerSpecURL, {
-          })
-          .done(function( data ) {
-            // get the value from the input
-            var apiKey = $("#your_input_apiKey").val();
-            getDCHubble(data, apiKey);
-          });
-
 
       });
 
-      function getDCHubble(data, apiKey){
-        debugger;
+      function getDisplyCode(data, apiKey){
         swaggerSpecFull = data;  //set the global var.
 
         var displayCode = '';
@@ -68,21 +65,17 @@
           $.getJSON(URL, {
             })
             .done(function( data ) {
-              // console.log(data);
-              if (data.hits.hits[0]._source.displayCode){
+              if (data.hits.total > 0){
                 displayCode = data.hits.hits[0]._source.displayCode;
                 //OK now see what features are available.
-                //https://rosetta.prod.us-east-1.nexus.bazaarvoice.com/package/1/display/3545relevancyapi
                 getApplicationCodes(displayCode);
               }
               else{
                 console.log('No displayCode found')
               }
-
             });
       }
       function getApplicationCodes(displayCode){
-          debugger;
           var features = []; //empty array            
           var featuresURL = "https://rosetta.prod.us-east-1.nexus.bazaarvoice.com/package/1/display/" + displayCode; 
           $.getJSON(featuresURL, {
@@ -96,9 +89,6 @@
           });
       }
       function getConfigs(displayCode, features){
-        debugger;
-
-        swaggerSpecFull
         //kill the stories endpoints for ALL
         delete swaggerSpecFull.paths['/stories.json'];
         delete swaggerSpecFull.paths['/submitstory.json'];
@@ -131,7 +121,6 @@
         renderSwagger();
       }
       function renderSwagger(){
-        alert('render the page now');
         window.swaggerUi = new SwaggerUi({
           url: url,
           spec: swaggerSpecFull,
